@@ -20,7 +20,7 @@ src/
 │   ├── providers.tsx             # Composed context providers
 │   └── router.tsx                # createBrowserRouter, lazy-loaded pages
 ├── types/
-│   └── index.ts                  # Shared types: ApiResponse<T>, PageVO<T>, BasePageQO
+│   └── index.ts                  # Shared types: Result<T>, PageVO<T>, BasePageQO
 ├── services/                     # API service layer
 │   ├── http.ts                   # HTTP client wrapper (fetch-based)
 │   ├── <entity>.ts               # Service object per domain
@@ -61,17 +61,14 @@ Rules:
 - **String literal unions, NOT enums** — e.g., `type Status = "ACTIVE" | "DISABLED"`
 - Response types in `services/<entity>.typings.d.ts` as exported interfaces
 - Query types (extending `BasePageQO`) exported from the service file itself
-- Shared types (`ApiResponse<T>`, `PageVO<T>`, `BasePageQO`) in `types/index.ts`
+- Shared types (`Result<T>`, `PageVO<T>`, `BasePageQO`) in `types/index.ts`
 
 Shared types (always include these in `types/index.ts`):
 
 ```typescript
-export interface ApiResponse<T> {
-  success: boolean;
-  code: string;
-  msg: string;
-  data: T;
-}
+export type Result<T> =
+  | { success: true; data: T }
+  | { success: false; code: string; msg: string };
 
 export interface PageVO<T> {
   pageNum: number;
@@ -121,7 +118,7 @@ Key behaviors:
 - Build full URL from `VITE_API_BASE` env var (default `/api`)
 - Use `URLSearchParams` to serialize query params — never manually concatenate
 - Inject `Authorization` header when `token` is provided
-- Parse every response as `ApiResponse<T>` envelope
+- Parse every response as `Result<T>` envelope
 - Throw `HttpError` on non-200 or `success: false`
 - Register an `unauthorizedHandler` callback for 401 interception
 
