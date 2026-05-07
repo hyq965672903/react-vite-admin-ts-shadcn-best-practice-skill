@@ -1,0 +1,23 @@
+{
+  "skill_name": "react-vite-admin-ts-shadcn-best-practice-skill",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我创建一个 Vite + React + TypeScript 的后台管理项目骨架。有一个列表页面需要展示数据、支持分页和筛选。后端 API 风格是 RESTful 的。使用 shadcn/ui + TanStack Query。需要包含登录页面和列表页。",
+      "expected_output": "项目目录结构遵循 conventions：types/index.ts 含 ApiResponse/PageVO/BasePageQO，services/http.ts 是 fetch 封装，services/ 含领域 service + typings，hooks/ 封装 TanStack Query，pages/ 拆分主页面和子组件，components/ 包含 FilterBar/DataTableShell/ConfirmDialog，AuthProvider + ProtectedRoute 完成鉴权。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "在现有的 Vite+React+TS 后台项目中新增一个业务模块。API 有列表（分页+筛选）、创建、更新三个接口。实体有 name、price、status(ENABLED/DISABLED)、createTime 字段。需要列表页和创建表单。",
+      "expected_output": "新增 services/<entity>.ts + typings.d.ts 定义 VO/QO/DTO，hooks/use-<entity>.ts 封装 hooks，pages/<feature>/index.tsx 列表页 + 子组件。目录命名、类型命名、hook 命名均遵循 conventions。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "我有一个写得很乱的 Vite+React+TS 项目，所有代码都堆在 src/pages/ 里，类型定义散落各处，API 调用直接在组件里写 fetch，没有统一的 service 层。帮我按照最佳实践重构。",
+      "expected_output": "重构后的目录结构符合 conventions：类型收拢到 types/index.ts 和 services/*.typings.d.ts，API 调用抽到 services/ 层，组件内的数据逻辑抽到 hooks/，页面组件精简到 150 行以内。",
+      "files": []
+    }
+  ]
+}
