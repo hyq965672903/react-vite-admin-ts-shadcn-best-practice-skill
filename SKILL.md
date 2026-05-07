@@ -4,8 +4,8 @@ description: >
   Coding conventions for Vite + React + TypeScript projects using shadcn/ui.
   Use this skill whenever creating, scaffolding, or refactoring a Vite+React+TS
   frontend project — especially admin panels, dashboards, or internal tools.
-  Covers directory structure, type naming (VO/QO), service layer, TanStack Query
-  hooks, page component patterns, auth, and reusable component conventions.
+  Covers directory structure, type naming (VO/QO), service layer, hooks,
+  page component patterns, auth, and reusable component conventions.
 ---
 
 # Vite + React + TypeScript + shadcn/ui Conventions
@@ -25,7 +25,7 @@ src/
 │   ├── http.ts                   # HTTP client wrapper (fetch-based)
 │   ├── <entity>.ts               # Service object per domain
 │   └── <entity>.typings.d.ts    # VO/QO type definitions
-├── hooks/                        # Custom hooks (TanStack Query wrappers)
+├── hooks/                        # Custom hooks
 │   └── use-<entity>.ts
 ├── pages/                        # Page components
 │   └── <feature>/
@@ -154,48 +154,14 @@ Rules:
 - Every protected endpoint method takes `token?: string` as its last parameter
 - Re-export DTO/QO types from `.typings.d.ts` when they're needed by hooks or pages
 
-## Hooks (TanStack Query)
+## Hooks
 
 One file per domain: `hooks/use-<entity>.ts`.
-
-```typescript
-export function useEntityList(params: EntityQueryQO) {
-  const { token } = useAuth();
-  return useQuery({
-    queryKey: ["entities", "list", params],
-    queryFn: () => entityService.list(params, token ?? undefined),
-    enabled: Boolean(token),
-  });
-}
-
-export function useEntityDetail(id: number | null) {
-  const { token } = useAuth();
-  return useQuery({
-    queryKey: ["entities", "detail", id],
-    queryFn: () => entityService.detail(id!, token ?? undefined),
-    enabled: Boolean(token) && id !== null,
-  });
-}
-
-export function useCreateEntity() {
-  const { token } = useAuth();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: CreateEntityDTO) =>
-      entityService.create(data, token ?? undefined),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["entities"] });
-    },
-  });
-}
-```
 
 Conventions:
 - **Naming**: `use<Entity><Action>` — e.g., `useOrderList`, `useCreateProduct`, `useUpdateStatus`
 - **Token**: always obtained from `useAuth()`, passed as `token ?? undefined`
-- **Query keys**: `["<domain>", "<action>", params]` — hierarchical for targeted invalidation
-- **Mutations**: call `queryClient.invalidateQueries({ queryKey: ["<domain>"] })` on success
-- **Enabled guard**: queries must have `enabled: Boolean(token)` (or additional null guards)
+- **Data layer**: wrap `services/<entity>.ts` calls — keep components free of direct service imports
 
 ## Page Components
 

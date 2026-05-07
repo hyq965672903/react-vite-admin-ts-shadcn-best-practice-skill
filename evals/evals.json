@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "帮我创建一个 Vite + React + TypeScript 的后台管理项目骨架。有一个列表页面需要展示数据、支持分页和筛选。后端 API 风格是 RESTful 的。使用 shadcn/ui + TanStack Query。需要包含登录页面和列表页。",
-      "expected_output": "项目目录结构遵循 conventions：types/index.ts 含 ApiResponse/PageVO/BasePageQO，services/http.ts 是 fetch 封装，services/ 含领域 service + typings，hooks/ 封装 TanStack Query，pages/ 拆分主页面和子组件，components/ 包含 FilterBar/DataTableShell/ConfirmDialog，AuthProvider + ProtectedRoute 完成鉴权。",
+      "expected_output": "项目目录结构遵循 conventions：types/index.ts 含 Result/PageVO/BasePageQO，services/http.ts 是 fetch 封装，services/ 含领域 service + typings，hooks/ 封装数据查询逻辑，pages/ 拆分主页面和子组件，components/ 包含 FilterBar/DataTableShell/ConfirmDialog，AuthProvider + ProtectedRoute 完成鉴权。",
       "files": []
     },
     {
